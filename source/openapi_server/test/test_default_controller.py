@@ -13,33 +13,36 @@ from openapi_server.test import BaseTestCase
 class TestDefaultController(BaseTestCase):
     """DefaultController integration test stubs"""
 
-    def test_get_processor_list_by_id(self):
-        """Test case for get_processor_list_by_id
+    def test_get_processes_for_collection_id(self):
+        """Test case for get_processes_for_collection_id
 
-        Get processor list by collection id
+        List processes applicable to a collection specified by collection id
         """
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/process-mapper/v0/Collection/{collection_id}'.format(collection_id='collection_id_example'),
+            '/unity/v0/collections/{collection_id}/processes'.format(collection_id='collection_id_example'),
             method='GET',
             headers=headers)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_get_time_series_by_collection_id(self):
-        """Test case for get_time_series_by_collection_id
+    def test_get_time_series_for_collection_id(self):
+        """Test case for get_time_series_for_collection_id
 
-        Get time series by collection id
+        Get time series by spatial and temporal constraints for a collection specified by collection id
         """
+        query_string = [('bbox', 'bbox_example'),
+                        ('timespan', 'timespan_example')]
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/process-mapper/v0/Collection/{collection_id}/timeSeries'.format(collection_id='collection_id_example'),
-            method='POST',
-            headers=headers)
+            '/unity/v0/collections/{collection_id}/processes/time-series:averaged-over-area'.format(collection_id='collection_id_example'),
+            method='GET',
+            headers=headers,
+            query_string=query_string)
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

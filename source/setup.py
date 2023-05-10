@@ -22,10 +22,10 @@ REQUIRES = [
 setup(
     name=NAME,
     version=VERSION,
-    description="DAPA Process Mapper",
+    description="Unity DAPA Process Mapper",
     author_email="unity@jpl.nasa.gov",
     url="",
-    keywords=["OpenAPI", "DAPA Process Mapper"],
+    keywords=["OpenAPI", "Unity DAPA Process Mapper"],
     install_requires=REQUIRES,
     packages=find_packages(),
     package_data={'': ['openapi/openapi.yaml']},
@@ -33,7 +33,7 @@ setup(
     entry_points={
         'console_scripts': ['openapi_server=openapi_server.__main__:main']},
     long_description="""\
-    DAPA Process Mapper
+    Unity DAPA Process Mapper
     """
 )
 
