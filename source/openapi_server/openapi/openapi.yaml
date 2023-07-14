@@ -1,0 +1,159 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: unity@jpl.nasa.gov
+  description: Unity DAPA Process Mapper
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://unity.jpl.nasa.gov/terms/
+  title: Unity DAPA Process Mapper
+  version: 0.0.1
+servers:
+- description: Local development server
+  url: http://localhost:8080/unity/v0/
+paths:
+  /collections/{collection_id}/processes:
+    get:
+      description: Get processes for collection id
+      operationId: get_processes_for_collection_id
+      parameters:
+      - description: id of a collection
+        explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/CollectionId'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processes'
+          description: Successfully return a list of processors
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InlineResponse400'
+          description: processor not found
+      summary: List processes applicable to a collection specified by collection id
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+  /collections/{collection_id}/processes/time-series:area:
+    get:
+      description: Get time series for collection id
+      operationId: get_time_series_for_collection_id
+      parameters:
+      - description: id of a collection
+        explode: false
+        in: path
+        name: collection_id
+        required: true
+        schema:
+          $ref: '#/components/schemas/CollectionId'
+        style: simple
+      - description: bouding box
+        explode: false
+        in: query
+        name: bbox
+        required: true
+        schema:
+          $ref: '#/components/schemas/BoundingBox'
+        style: simple
+      - description: start and end time
+        explode: false
+        in: query
+        name: timespan
+        required: true
+        schema:
+          $ref: '#/components/schemas/TimeSpan'
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeSeries'
+          description: Successfully return a time series
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InlineResponse400'
+          description: processor not found
+      summary: Get time series by spatial and temporal constraints for a collection
+        specified by collection id
+      x-openapi-router-controller: openapi_server.controllers.default_controller
+components:
+  parameters:
+    CollectionId:
+      description: id of a collection
+      explode: false
+      in: path
+      name: collection_id
+      required: true
+      schema:
+        $ref: '#/components/schemas/CollectionId'
+      style: simple
+    BoundingBox:
+      description: bouding box
+      explode: false
+      in: query
+      name: bbox
+      required: true
+      schema:
+        $ref: '#/components/schemas/BoundingBox'
+      style: simple
+    TimeSpan:
+      description: start and end time
+      explode: false
+      in: query
+      name: timespan
+      required: true
+      schema:
+        $ref: '#/components/schemas/TimeSpan'
+      style: simple
+  responses:
+    "400Error":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InlineResponse400'
+      description: Invalid store
+    "404Error":
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InlineResponse400'
+      description: Store not found
+  schemas:
+    InlineResponse400:
+      description: A customized HTTP 400 response which explains why the service cannot
+        or will not process the store.
+      properties:
+        message:
+          description: A message to accompany the HTTP 400 response.
+          type: string
+    CollectionId:
+      description: collection id
+      example: MUR25-JPL-L4-GLOB-v4.2_analysed_sst
+      type: string
+    BoundingBox:
+      description: bounding box
+      example: 11.49,48.05,11.66,48.22
+      type: string
+    TimeSpan:
+      description: start/end time in iso format
+      example: 2018-02-12T00:00:00Z/2018-03-18T12:31:12Z
+      type: string
+    Processes:
+      items:
+        type: string
+      type: array
+    TimeSeries:
+      items:
+        format: float
+        type: number
+      type: array
