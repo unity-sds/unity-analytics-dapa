@@ -42,7 +42,7 @@ paths:
           description: processor not found
       x-openapi-router-controller: openapi_server.controllers.default_controller
 
-  /collections/{collection_id}/processes/time-series:averaged-over-area:
+  /collections/{collection_id}/processes/time-series:area:
     get:
       summary: "Get time series by spatial and temporal constraints for a collection specified by collection id"
       description: Get time series for collection id
@@ -79,7 +79,7 @@ components:
           $ref: '#/components/schemas/CollectionId'
         style: simple
       BoundingBox:
-        description: bouding box
+        description: bounding box
         explode: false
         in: query
         name: bbox

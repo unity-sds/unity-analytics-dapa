@@ -41,7 +41,7 @@ paths:
           description: processor not found
       summary: List processes applicable to a collection specified by collection id
       x-openapi-router-controller: openapi_server.controllers.default_controller
-  /collections/{collection_id}/processes/time-series:averaged-over-area:
+  /collections/{collection_id}/processes/time-series:area:
     get:
       description: Get time series for collection id
       operationId: get_time_series_for_collection_id
