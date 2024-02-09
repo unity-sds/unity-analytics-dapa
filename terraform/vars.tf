@@ -27,6 +27,10 @@ variable subnet_id {
   type = string
 }
 
+variable subnet_ids {
+  type = list
+}
+
 variable key_name {
   type = string
 }

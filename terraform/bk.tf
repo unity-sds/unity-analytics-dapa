@@ -23,3 +23,7 @@ resource "aws_instance" "unity_dapa_instance" {
   user_data = file("./add-dapa.sh")
 
 }
+
+output "instance_id" {
+  value = aws_instance.unity_dapa_instance.id
+}
