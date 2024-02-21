@@ -18,25 +18,28 @@ resource "aws_api_gateway_resource" "rest_api_resource_for_project" {
   path_part   = var.path_part
 }
 
-/*
 #
 # Creates the wildcard path (proxy+) resource, under the project resource 
 #
-resource "aws_api_gateway_resource" "rest_api_resource_for_project_proxy_resource" {
-  rest_api_id = data.aws_api_gateway_rest_api.rest_api.id
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_proxy_resource" {
+  #rest_api_id = data.aws_api_gateway_rest_api.rest_api.id
+  rest_api_id = var.rest_api_id
   parent_id   = aws_api_gateway_resource.rest_api_resource_for_project.id
   path_part   = "{proxy+}"
 }
 
-resource "aws_api_gateway_method" "rest_api_resource_for_project_proxy_resource_method" {
-  rest_api_id   = data.aws_api_gateway_rest_api.rest_api.id
-  resource_id   = aws_api_gateway_resource.rest_api_resource_for_project_proxy_resource.id
+resource "aws_api_gateway_method" "unity_dapa_rest_api_proxy_resource_method" {
+  #rest_api_id   = data.aws_api_gateway_rest_api.rest_api.id
+  rest_api_id   = var.rest_api_id
+  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_proxy_resource.id
   http_method   = "ANY"
   authorization = "NONE"
   request_parameters = {
     "method.request.path.proxy" = true
   }
 }
+
+/*
 
 resource "aws_api_gateway_integration" "rest_api_resource_for_project_proxy_resource_method_integration" {
   rest_api_id   = data.aws_api_gateway_rest_api.rest_api.id
