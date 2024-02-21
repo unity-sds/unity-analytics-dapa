@@ -12,7 +12,7 @@ data "aws_api_gateway_rest_api" "rest_api" {
 # 
 # Creates the project API Gateway resource to be pointed to a project level API gateway.
 # DEPLOYER SHOULD MODIFY THE VARIABLE var.resource_for_project TO BE THE PROJECT NAME (e.g. "soundersips")
-resource "aws_api_gateway_resource" "rest_api_resource_for_project" {
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_resource" {
   rest_api_id = var.rest_api_id
   parent_id   = var.parent_id
   path_part   = var.path_part
@@ -24,7 +24,7 @@ resource "aws_api_gateway_resource" "rest_api_resource_for_project" {
 resource "aws_api_gateway_resource" "unity_dapa_rest_api_proxy_resource" {
   #rest_api_id = data.aws_api_gateway_rest_api.rest_api.id
   rest_api_id = var.rest_api_id
-  parent_id   = aws_api_gateway_resource.rest_api_resource_for_project.id
+  parent_id   = aws_api_gateway_resource.unity_dapa_rest_api_resource.id
   path_part   = "{proxy+}"
 }
 
