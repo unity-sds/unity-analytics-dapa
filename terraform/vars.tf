@@ -35,9 +35,13 @@ variable key_name {
   type = string
 }
 
-variable rest_api_id {
+variable unity_rest_api_name {
   type = string
 }
+
+#variable rest_api_id {
+#  type = string
+#}
 
 variable parent_id {
   type = string

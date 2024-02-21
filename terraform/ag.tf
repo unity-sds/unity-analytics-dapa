@@ -1,19 +1,19 @@
-/*
 # Reference to the REST API to be updated
-data "aws_api_gateway_rest_api" "rest_api" {
+data "aws_api_gateway_rest_api" "unity_rest_api" {
 
   # Name of the REST API to look up. If no REST API is found with this name, an error will be returned. 
   # If multiple REST APIs are found with this name, an error will be returned. At the moment there is noi data source to 
   # get REST API by ID.
-  name = var.shared_services_rest_api_name
+  #name = var.shared_services_rest_api_name
+  name = var.unity_rest_api_name
 }
-*/
 
 # 
 # Creates the project API Gateway resource to be pointed to a project level API gateway.
 # DEPLOYER SHOULD MODIFY THE VARIABLE var.resource_for_project TO BE THE PROJECT NAME (e.g. "soundersips")
 resource "aws_api_gateway_resource" "unity_dapa_rest_api_resource" {
-  rest_api_id = var.rest_api_id
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  #rest_api_id = var.rest_api_id
   parent_id   = var.parent_id
   path_part   = var.path_part
 }
@@ -22,15 +22,15 @@ resource "aws_api_gateway_resource" "unity_dapa_rest_api_resource" {
 # Creates the wildcard path (proxy+) resource, under the project resource 
 #
 resource "aws_api_gateway_resource" "unity_dapa_rest_api_proxy_resource" {
-  #rest_api_id = data.aws_api_gateway_rest_api.rest_api.id
-  rest_api_id = var.rest_api_id
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  #rest_api_id = var.rest_api_id
   parent_id   = aws_api_gateway_resource.unity_dapa_rest_api_resource.id
   path_part   = "{proxy+}"
 }
 
 resource "aws_api_gateway_method" "unity_dapa_rest_api_proxy_resource_method" {
-  #rest_api_id   = data.aws_api_gateway_rest_api.rest_api.id
-  rest_api_id   = var.rest_api_id
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  #rest_api_id   = var.rest_api_id
   resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_proxy_resource.id
   http_method   = "ANY"
   authorization = "NONE"
