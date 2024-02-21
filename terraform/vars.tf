@@ -34,3 +34,15 @@ variable subnet_ids {
 variable key_name {
   type = string
 }
+
+variable rest_api_id {
+  type = string
+}
+
+variable parent_id {
+  type = string
+}
+
+variable path_part {
+  type = string
+}
