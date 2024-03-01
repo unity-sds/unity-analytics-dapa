@@ -5,11 +5,14 @@ resource "aws_iam_instance_profile" "unity_dapa_instance_profile" {
 }
 
 resource "aws_instance" "unity_dapa_instance" {
-  ami           = "ami-00e4ff3fd06af8fae"
+  ami           = var.ami
   instance_type = "t2.micro"
 
   tags = {
     Name = "unity-dapa-instance-tf"
+    Venue = var.tag_map["Venue"]
+    ServiceArea = var.tag_map["ServiceArea"]
+    Capability = var.tag_map["Capability"]
   }
 
   key_name = var.key_name
@@ -22,8 +25,4 @@ resource "aws_instance" "unity_dapa_instance" {
 
   user_data = file("./add-dapa.sh")
 
-}
-
-output "instance_id" {
-  value = aws_instance.unity_dapa_instance.id
 }

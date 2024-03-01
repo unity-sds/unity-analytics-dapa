@@ -18,6 +18,17 @@ resource "aws_api_gateway_resource" "unity_dapa_rest_api_resource" {
   path_part   = var.path_part
 }
 
+resource "aws_api_gateway_method" "unity_dapa_rest_api_resource_method" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  #rest_api_id   = var.rest_api_id
+  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_resource.id
+  http_method   = "GET"
+  authorization = "NONE"
+  #request_parameters = {
+  #  "method.request.path.proxy" = true
+  #}
+}
+
 #
 # Creates the wildcard path (proxy+) resource, under the project resource 
 #
@@ -39,7 +50,43 @@ resource "aws_api_gateway_method" "unity_dapa_rest_api_proxy_resource_method" {
   }
 }
 
+data "aws_api_gateway_vpc_link" "unity_dapa_vpc_link" {
+  name        = "unity-dapa-vpclink-test"
+}
+
+resource "aws_api_gateway_integration" "unity_dapa_rest_api_proxy_resource_integration" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_proxy_resource.id
+  http_method          = aws_api_gateway_method.unity_dapa_rest_api_proxy_resource_method.http_method
+  #type                 = "HTTP"
+  type                 = "HTTP_PROXY"
+  uri                  = "http://www.example.net"
+  integration_http_method = "ANY"
+
+  connection_type = "VPC_LINK"
+  connection_id   = data.aws_api_gateway_vpc_link.unity_dapa_vpc_link.id
+
+  #cache_key_parameters = ["method.request.path.proxy"]
+
+  #timeout_milliseconds = 29000
+  #request_parameters = {
+  #  "integration.request.path.proxy" = "method.request.path.proxy"
+  #}
+
+}
+
+resource "aws_api_gateway_deployment" "unit_rest_api_deployment" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  #stage_name  = var.rest_api_stage
+  stage_name  = "beta"
+}
+
 /*
+
+resource "aws_api_gateway_vpc_link" "unity_dapa_vpc_link" {
+  name        = "unity-dapa--vpc-link"
+  target_arns = [aws_lb.unity-dapa-lb-tf.arn]
+}
 
 resource "aws_api_gateway_integration" "rest_api_resource_for_project_proxy_resource_method_integration" {
   rest_api_id   = data.aws_api_gateway_rest_api.rest_api.id

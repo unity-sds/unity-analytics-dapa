@@ -31,6 +31,10 @@ variable subnet_ids {
   type = list
 }
 
+variable ami {
+  type = string
+}
+
 variable key_name {
   type = string
 }
@@ -49,4 +53,8 @@ variable parent_id {
 
 variable path_part {
   type = string
+}
+
+variable tag_map {
+  type = map
 }
