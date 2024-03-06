@@ -55,6 +55,6 @@ variable path_part {
   type = string
 }
 
-variable tag_map {
+variable common_tags {
   type = map
 }

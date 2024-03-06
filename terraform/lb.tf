@@ -18,13 +18,17 @@ resource "aws_lb_target_group" "unity_dapa_tg_tf" {
     healthy_threshold   = 5
     unhealthy_threshold = 2
   }
+
+  tags = {
+    Name = "unity_dapa_tg_tf"
+  }
 }
 
 # attach instance
 resource "aws_lb_target_group_attachment" "unity_dapa_tg_attachment_tf" {
-    target_group_arn = aws_lb_target_group.unity_dapa_tg_tf.arn
-    target_id        = aws_instance.unity_dapa_instance.id
-    port             = 8080
+  target_group_arn = aws_lb_target_group.unity_dapa_tg_tf.arn
+  target_id        = aws_instance.unity_dapa_instance.id
+  port             = 8080
 }
 
 # create alb
@@ -46,7 +50,7 @@ resource "aws_lb" "unity-dapa-lb-tf" {
   #}
 
   tags = {
-    Environment = "dev"
+    Name = "unity-dapa-lb-tf"
   }
 }
 
@@ -58,5 +62,9 @@ resource "aws_lb_listener" "unity_dapa_lb_listener" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.unity_dapa_tg_tf.arn
+  }
+
+  tags = {
+    Name = "unity_dapa_lb_listener"
   }
 }

@@ -2,6 +2,11 @@ resource "aws_iam_instance_profile" "unity_dapa_instance_profile" {
   name = "unity-dapa-instance-profile-tf"
 
   role = var.role
+
+  tags = {
+    Name = "unity_dapa_instance_profile"
+  }
+
 }
 
 resource "aws_instance" "unity_dapa_instance" {
@@ -10,9 +15,6 @@ resource "aws_instance" "unity_dapa_instance" {
 
   tags = {
     Name = "unity-dapa-instance-tf"
-    Venue = var.tag_map["Venue"]
-    ServiceArea = var.tag_map["ServiceArea"]
-    Capability = var.tag_map["Capability"]
   }
 
   key_name = var.key_name
