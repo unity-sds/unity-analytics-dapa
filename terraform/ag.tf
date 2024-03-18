@@ -8,6 +8,87 @@ data "aws_api_gateway_rest_api" "unity_rest_api" {
   name = var.unity_rest_api_name
 }
 
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_collections" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  parent_id   = var.parent_id
+  path_part   = "collections"
+}
+
+#resource "aws_api_gateway_method" "unity_dapa_rest_api_collections_method" {
+#  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+#  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_collections.id
+#  http_method   = "GET"
+#  authorization = "NONE"
+#}
+
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_collection_id" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  parent_id   = aws_api_gateway_resource.unity_dapa_rest_api_collections.id
+  path_part   = "{collectionId}"
+}
+
+#resource "aws_api_gateway_method" "unity_dapa_rest_api_collection_id_method" {
+#  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+#  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_collection_id.id
+#  http_method   = "GET"
+#  authorization = "NONE"
+#  #request_parameters = {
+#  #  "method.request.path.collectionId" = true
+#  #}
+#}
+
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_processes" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  parent_id   = aws_api_gateway_resource.unity_dapa_rest_api_collection_id.id
+  path_part   = "processes"
+}
+
+#resource "aws_api_gateway_method" "unity_dapa_rest_api_processes_method" {
+#  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+#  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_processes.id
+#  http_method   = "GET"
+#  authorization = "NONE"
+#}
+
+resource "aws_api_gateway_resource" "unity_dapa_rest_api_proxy_plus" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  parent_id   = aws_api_gateway_resource.unity_dapa_rest_api_processes.id
+  path_part   = "{proxy+}"
+}
+
+resource "aws_api_gateway_method" "unity_dapa_rest_api_proxy_plus_method" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_proxy_plus.id
+  http_method   = "ANY"
+  authorization = "NONE"
+  request_parameters = {
+    "method.request.path.collectionId" = true
+    "method.request.path.proxy" = true
+  }
+}
+
+resource "aws_api_gateway_integration" "unity_dapa_rest_api_proxy_plus_integration" {
+  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_proxy_plus.id
+  http_method          = aws_api_gateway_method.unity_dapa_rest_api_proxy_plus_method.http_method
+  #type                 = "HTTP"
+  type                 = "HTTP_PROXY"
+  uri                  = join("", ["http://", aws_lb.unity-dapa-lb-tf.dns_name, "/unity/v0/collections/{collectionId}/processes/{proxy}"])
+  integration_http_method = "ANY"
+
+  connection_type = "VPC_LINK"
+  connection_id   = data.aws_api_gateway_vpc_link.unity_dapa_vpc_link.id
+
+  #cache_key_parameters = ["method.request.path.proxy"]
+
+  #timeout_milliseconds = 29000
+  request_parameters = {
+    "integration.request.path.collectionId" = "method.request.path.collectionId",
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
+
+}
+
 # 
 # Creates the project API Gateway resource to be pointed to a project level API gateway.
 # DEPLOYER SHOULD MODIFY THE VARIABLE var.resource_for_project TO BE THE PROJECT NAME (e.g. "soundersips")
@@ -18,16 +99,16 @@ resource "aws_api_gateway_resource" "unity_dapa_rest_api_resource" {
   path_part   = var.path_part
 }
 
-resource "aws_api_gateway_method" "unity_dapa_rest_api_resource_method" {
-  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
-  #rest_api_id   = var.rest_api_id
-  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_resource.id
-  http_method   = "GET"
-  authorization = "NONE"
-  #request_parameters = {
-  #  "method.request.path.proxy" = true
-  #}
-}
+#resource "aws_api_gateway_method" "unity_dapa_rest_api_resource_method" {
+#  rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
+#  #rest_api_id   = var.rest_api_id
+#  resource_id   = aws_api_gateway_resource.unity_dapa_rest_api_resource.id
+#  http_method   = "GET"
+#  authorization = "NONE"
+#  #request_parameters = {
+#  #  "method.request.path.proxy" = true
+#  #}
+#}
 
 #
 # Creates the wildcard path (proxy+) resource, under the project resource 
@@ -69,9 +150,10 @@ resource "aws_api_gateway_integration" "unity_dapa_rest_api_proxy_resource_integ
   #cache_key_parameters = ["method.request.path.proxy"]
 
   #timeout_milliseconds = 29000
-  #request_parameters = {
-  #  "integration.request.path.proxy" = "method.request.path.proxy"
-  #}
+  request_parameters = {
+    #"integration.request.path.collectionId" = "method.request.path.collectionId",
+    "integration.request.path.proxy" = "method.request.path.proxy"
+  }
 
 }
 

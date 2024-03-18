@@ -17,7 +17,7 @@ resource "aws_instance" "unity_dapa_instance" {
     Name = "unity-dapa-instance-tf"
   }
 
-  key_name = var.key_name
+  #key_name = var.key_name
 
   vpc_security_group_ids = [var.sg_id]
 
