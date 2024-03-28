@@ -35,11 +35,15 @@ variable ami {
   type = string
 }
 
-variable key_name {
+#variable key_name {
+#  type = string
+#}
+
+variable rest_api_stage {
   type = string
 }
 
-variable unity_rest_api_name {
+variable rest_api_name {
   type = string
 }
 
