@@ -50,7 +50,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/CollectionId'
         - $ref: '#/components/parameters/BoundingBox'
-        - $ref: '#/components/parameters/TimeSpan'
+        - $ref: '#/components/parameters/DateTime'
       responses:
         200:
           content:
@@ -87,14 +87,14 @@ components:
         schema:
           $ref: '#/components/schemas/BoundingBox'
         style: simple
-      TimeSpan:
+      DateTime:
         description: start and end time
         explode: false
         in: query
-        name: timespan
+        name: datetime
         required: true
         schema:
-          $ref: '#/components/schemas/TimeSpan'
+          $ref: '#/components/schemas/DateTime'
         style: simple
 
   responses:
@@ -123,19 +123,19 @@ components:
       description: collection id
       type: string
       #pattern: ^(\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}\.){0,1}\w{8}\-\w{4}\-\w{4}\-\w{4}\-\w{12}$
-      example: MUR25-JPL-L4-GLOB-v4.2_analysed_sst
+      example: JPL_MUR25-JPL-L4-GLOB-v04.2
 
     BoundingBox:
       description: bounding box
       type: string
       #pattern: ^(\w){3}(\w)$
-      example: 11.49,48.05,11.66,48.22
+      example: -160,-15,-130,15
 
-    TimeSpan:
+    DateTime:
       description: start/end time in iso format
       type: string
       #pattern: ^(\w){3}(\w)$
-      example: 2018-02-12T00:00:00Z/2018-03-18T12:31:12Z
+      example: 2022-01-01T00:00:00Z/2022-01-31T23:59:59Z
 
     Processes:
       type: array

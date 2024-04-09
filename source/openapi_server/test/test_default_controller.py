@@ -34,12 +34,12 @@ class TestDefaultController(BaseTestCase):
         Get time series by spatial and temporal constraints for a collection specified by collection id
         """
         query_string = [('bbox', 'bbox_example'),
-                        ('timespan', 'timespan_example')]
+                        ('datetime', '2013-10-20T19:20:30+01:00')]
         headers = { 
             'Accept': 'application/json',
         }
         response = self.client.open(
-            '/unity/v0/collections/{collection_id}/processes/time-series:averaged-over-area'.format(collection_id='collection_id_example'),
+            '/unity/v0/collections/{collection_id}/processes/time-series:area'.format(collection_id='collection_id_example'),
             method='GET',
             headers=headers,
             query_string=query_string)
