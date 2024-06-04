@@ -11,7 +11,8 @@ resource "aws_lb_target_group" "unity_dapa_tg_tf" {
     enabled             = true
     protocol            = "HTTP"
     port                = 8080
-    path                = "/unity/v0/collections/MUR25-JPL-L4-GLOB-v4.2_analysed_sst/processes"
+    #path                = "/unity/v0/collections/MUR25-JPL-L4-GLOB-v4.2_analysed_sst/processes"
+    path                = "/unity/v0/openapi.json"
     interval            = 30
     timeout             = 10
     matcher             = 200
