@@ -106,8 +106,7 @@ resource "aws_api_gateway_vpc_link" "unity_dapa_vpc_link" {
 
 resource "aws_api_gateway_deployment" "unit_rest_api_deployment" {
   rest_api_id = data.aws_api_gateway_rest_api.unity_rest_api.id
-  #stage_name  = var.rest_api_stage
-  stage_name  = "beta"
+  stage_name  = var.rest_api_stage
 }
 
 /*

@@ -39,6 +39,10 @@ variable ami {
 #  type = string
 #}
 
+variable rest_api_stage {
+  type = string
+}
+
 variable unity_rest_api_name {
   type = string
 }
