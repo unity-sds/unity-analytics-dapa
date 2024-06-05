@@ -1,8 +1,24 @@
+variable account_id {
+  type = string
+}
+
 variable region {
   type = string
 }
 
 variable profile {
+  type = string
+}
+
+variable docker_image_name {
+  type = string
+}
+
+variable docker_image_tag {
+  type = string
+}
+
+variable sdap_server_url_prefix {
   type = string
 }
 
@@ -13,11 +29,6 @@ variable vpc_id {
 variable sg_id {
   type = string
 }
-
-#data "aws_security_group" "uas_dev" {
-#  vpc_id = var.vpc_id
-#  id = var.sg_id
-#}
 
 variable role {
   type = string
@@ -39,23 +50,19 @@ variable ami {
 #  type = string
 #}
 
+variable rest_api_name {
+  type = string
+}
+
 variable rest_api_stage {
   type = string
 }
-
-variable unity_rest_api_name {
-  type = string
-}
-
-#variable rest_api_id {
-#  type = string
-#}
 
 variable parent_id {
   type = string
 }
 
-variable path_part {
+variable health_check_parent_id {
   type = string
 }
 

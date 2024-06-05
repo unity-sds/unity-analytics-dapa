@@ -26,11 +26,11 @@ output "instance_tags_all" {
 }
 
 output "load_balancer_arn" {
-  value = aws_lb.unity-dapa-lb-tf.arn
+  value = aws_lb.unity-dapa-lb.arn
 }
 
 output "load_balancer_dns_name" {
-  value = aws_lb.unity-dapa-lb-tf.dns_name
+  value = aws_lb.unity-dapa-lb.dns_name
 }
 
 output "api_gateway_invoke_url" {

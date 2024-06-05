@@ -3,7 +3,7 @@
 #  instance_type = "t2.micro"
 #
 #  tags = {
-#    Name = "unity-dapa-debugger-host-tf"
+#    Name = "unity-dapa-debugger-host"
 #  }
 #
 #  #key_name = var.key_name
@@ -13,7 +13,4 @@
 #  subnet_id = var.subnet_id
 #
 #  iam_instance_profile = aws_iam_instance_profile.unity_dapa_instance_profile.name
-#
-#  #user_data = file("./add-dapa.sh")
-#
 #}
